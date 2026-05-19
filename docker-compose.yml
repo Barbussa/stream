@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: neuro-dashboard
+    restart: unless-stopped
+    ports:
+      - "8501:8501"
+    volumes:
+      # Mount folder export CSV dari MT5 ke dalam container
+      - C:\Thomson:/app/mt5_data
+    environment:
+      - TZ=Asia/Jakarta
+      - MAGIC_NUMBER=8880999
+      - DD_ALERT_DEFAULT=10.0
+    # Windows containers butuh isolation=process
+    isolation: process
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
